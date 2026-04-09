@@ -1,0 +1,235 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Quiz API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/quizzes": {
+      "get": {
+        "summary": "Get all quizzes",
+        "responses": {
+          "200": {
+            "description": "List of quizzes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "title": {
+                        "type": "string",
+                        "description": "Quiz title",
+                        "example": "Math Quiz"
+                      },
+                      "questions": {
+                        "minItems": 1,
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "questionText": {
+                              "type": "string",
+                              "minLength": 1,
+                              "description": "The question text",
+                              "example": "What is 2+2?"
+                            },
+                            "type": {
+                              "type": "string",
+                              "enum": [
+                                "mcq",
+                                "true_false",
+                                "text"
+                              ],
+                              "description": "Question type",
+                              "example": "mcq"
+                            },
+                            "options": {
+                              "description": "Options for MCQ",
+                              "example": [
+                                "1",
+                                "2",
+                                "3",
+                                "4"
+                              ],
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            },
+                            "correctAnswer": {
+                              "anyOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "boolean"
+                                }
+                              ],
+                              "description": "Correct answer",
+                              "example": "4"
+                            }
+                          },
+                          "required": [
+                            "questionText",
+                            "type",
+                            "correctAnswer"
+                          ],
+                          "additionalProperties": false
+                        }
+                      }
+                    },
+                    "required": [
+                      "title",
+                      "questions"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create quiz",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "Quiz title",
+                    "example": "Math Quiz"
+                  },
+                  "questions": {
+                    "minItems": 1,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "questionText": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "The question text",
+                          "example": "What is 2+2?"
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "mcq",
+                            "true_false",
+                            "text"
+                          ],
+                          "description": "Question type",
+                          "example": "mcq"
+                        },
+                        "options": {
+                          "description": "Options for MCQ",
+                          "example": [
+                            "1",
+                            "2",
+                            "3",
+                            "4"
+                          ],
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "correctAnswer": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "boolean"
+                            }
+                          ],
+                          "description": "Correct answer",
+                          "example": "4"
+                        }
+                      },
+                      "required": [
+                        "questionText",
+                        "type",
+                        "correctAnswer"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "title",
+                  "questions"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Quiz created"
+          }
+        }
+      }
+    },
+    "/api/attempts/submit": {
+      "post": {
+        "summary": "Submit quiz",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "quizId": {
+                    "type": "string",
+                    "description": "Quiz ID",
+                    "example": "64f123abc"
+                  },
+                  "answers": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "questionId": {
+                          "type": "string"
+                        },
+                        "answer": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "boolean"
+                            }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "questionId",
+                        "answer"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "quizId",
+                  "answers"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result"
+          }
+        }
+      }
+    }
+  }
+}

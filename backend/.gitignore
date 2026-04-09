@@ -1,0 +1,4 @@
+.env.keys
+.env*
+node_modules
+pnpm-lock.yaml
