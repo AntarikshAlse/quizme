@@ -33,6 +33,7 @@ export interface paths {
                              * @example Math Quiz
                              */
                             title: string;
+                            _id: string;
                             questions: {
                                 /**
                                  * @description The question text
@@ -75,7 +76,7 @@ export interface paths {
                 path?: never;
                 cookie?: never;
             };
-            requestBody?: {
+            requestBody: {
                 content: {
                     "application/json": {
                         /**
@@ -147,7 +148,7 @@ export interface paths {
                 path?: never;
                 cookie?: never;
             };
-            requestBody?: {
+            requestBody: {
                 content: {
                     "application/json": {
                         /**

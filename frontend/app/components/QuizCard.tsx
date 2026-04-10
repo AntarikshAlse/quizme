@@ -1,8 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import { Quiz } from "../page";
 
-export default function QuizCard({ quiz }) {
+interface QuizCardProps {
+  quiz: Quiz[0];
+}
+export default function QuizCard({ quiz }:QuizCardProps) {
   return (
     <div className="border p-4 rounded-xl shadow">
       <h2 className="text-lg font-semibold">{quiz.title}</h2>

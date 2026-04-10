@@ -3,9 +3,12 @@
 import { useEffect, useState } from "react";
 import API from "./lib/api";
 import QuizCard from "./components/QuizCard";
+import { paths, components } from "@/app/types/api";
+
+export type Quiz = paths["/api/quizzes"]["get"]["responses"]["200"]["content"]["application/json"];
 
 export default function Home() {
-  const [quizzes, setQuizzes] = useState([]);
+  const [quizzes, setQuizzes] = useState<Quiz>([]);
 
   useEffect(() => {
     API.get("/quizzes").then((res) => setQuizzes(res.data));
@@ -18,7 +21,7 @@ export default function Home() {
       {quizzes.length > 0 && (
         <div className="grid gap-4">
           {quizzes.map((quiz) => (
-            <QuizCard key={quiz._id} quiz={quiz} />
+            <QuizCard key={quiz.title} quiz={quiz} />
           ))}
         </div>
       ) || (
