@@ -7,26 +7,33 @@ import API from "@/app/lib/api";
 import Question from "@/app/components/Question";
 import { paths } from "@/app/types/api";
 
-export type QuizRequestBody = paths["/api/quizzes"]["post"]["requestBody"]['content']['application/json'];
-export type AttemptRequestBody = paths["/api/attempts/submit"]["post"]["requestBody"]['content']['application/json'];
+export type QuizRequestBody =
+  paths["/api/quizzes"]["post"]["requestBody"]["content"]["application/json"];
+export type AttemptRequestBody =
+  paths["/api/attempts/submit"]["post"]["requestBody"]["content"]["application/json"];
 
 export default function QuizPage() {
   const { id } = useParams();
 
   const [quiz, setQuiz] = useState<QuizRequestBody | null>(null);
-  const [answers, setAnswers] = useState<AttemptRequestBody["answers"] | {}>({});
-  const [result, setResult] = useState<Record <string, string> | null>(null);
+  const [answers, setAnswers] = useState<AttemptRequestBody["answers"]>([]);
+  const [result, setResult] = useState<Record<string, string> | null>(null);
 
   useEffect(() => {
     API.get(`/quizzes/${id}`).then((res) => setQuiz(res.data));
   }, [id]);
 
-  const handleAnswer = (qid: string, value: string|boolean) => {
-    setAnswers({ ...answers, [qid]: value });
+  const handleAnswer = (qid: string, value: string | boolean) => {
+    setAnswers([
+      ...answers,
+      {
+        questionId: qid,
+        answer: value,
+      },
+    ]);
   };
 
   const submitQuiz = async () => {
-
     const res = await API.post("/attempts/submit", {
       quizId: id,
       answers: answers,
