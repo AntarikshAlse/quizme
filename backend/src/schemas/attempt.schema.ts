@@ -2,6 +2,9 @@
 
 import { z } from "zod";
 
+export const zObjectId = () =>
+  z.string().regex(/^[a-fA-F0-9]{24}$/, "Invalid ObjectId");
+
 export const SubmitAttemptSchema = z.object({
   quizId: z.string().meta({
     description: "Quiz ID",
@@ -10,7 +13,7 @@ export const SubmitAttemptSchema = z.object({
 
   answers: z.array(
     z.object({
-      questionId: z.string(),
+      questionId: zObjectId(),
       answer: z.union([z.string(), z.boolean()]),
     })
   ),

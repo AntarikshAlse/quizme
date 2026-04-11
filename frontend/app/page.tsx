@@ -1,32 +1,25 @@
-"use client";
+import Link from 'next/link';
 
-import { useEffect, useState } from "react";
-import API from "./lib/api";
-import QuizCard from "./components/QuizCard";
-import { paths, components } from "@/app/types/api";
-
-export type Quiz = paths["/api/quizzes"]["get"]["responses"]["200"]["content"]["application/json"];
-
-export default function Home() {
-  const [quizzes, setQuizzes] = useState<Quiz>([]);
-
-  useEffect(() => {
-    API.get("/quizzes").then((res) => setQuizzes(res.data));
-  }, []);
-
+export default function HomePage() {
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Available Quizzes</h1>
+    <main className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="bg-white p-8 rounded-xl shadow-md text-center w-[300px]">
+        <h1 className="text-2xl font-bold mb-6">Quiz App</h1>
 
-      {quizzes.length > 0 && (
-        <div className="grid gap-4">
-          {quizzes.map((quiz) => (
-            <QuizCard key={quiz.title} quiz={quiz} />
-          ))}
+        <div className="flex flex-col gap-4">
+          <Link href="/admin/create">
+            <button className="w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+              Create Quiz
+            </button>
+          </Link>
+
+          <Link href="/quiz">
+            <button className="w-full py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
+              Show Quizzes
+            </button>
+          </Link>
         </div>
-      ) || (
-        <p className="text-center text-lg">No quizzes available</p>
-      )}
-    </div>
+      </div>
+    </main>
   );
 }

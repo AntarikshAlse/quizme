@@ -1,21 +1,29 @@
 // components/Question.js
 "use client";
 
-import { QuizRequestBody } from "../quiz/[id]/page";
+import { useState, memo } from "react";
+import { type Question } from "../quiz/[id]/page";
 
-
-export default function Question({ question, onAnswer }:{question: QuizRequestBody['questions'][0], onAnswer: (qid: string, value: string | boolean) => void}) {
+function Question({
+  question,
+  onAnswer,
+}: {
+  question: Question;
+  onAnswer: (qid: string, value: string | boolean, type?: string) => void;
+}) {
+  const [value, setValue] = useState("");
   return (
     <div className="mb-4">
       <p className="font-medium">{question.questionText}</p>
 
-      {question.type === "mcq" && question.options &&
+      {question.type === "mcq" &&
+        question.options &&
         question.options.map((opt, i) => (
-          <label key={i} className="block bg-red-200">
+          <label key={i} className="block">
             <input
               type="radio"
-              name={question.questionText}
-              onChange={() => onAnswer(question.questionText, opt)}
+              name={question._id}
+              onChange={() => onAnswer(question._id, opt)}
             />
             {opt}
           </label>
@@ -26,16 +34,16 @@ export default function Question({ question, onAnswer }:{question: QuizRequestBo
           <label>
             <input
               type="radio"
-              name={question.questionText}
-              onChange={() => onAnswer(question.questionText, true)}
+              name={question._id}
+              onChange={() => onAnswer(question._id, true)}
             />
             True
           </label>
           <label className="ml-4">
             <input
               type="radio"
-              name={question.questionText}
-              onChange={() => onAnswer(question.questionText, false)}
+              name={question._id}
+              onChange={() => onAnswer(question._id, false)}
             />
             False
           </label>
@@ -46,9 +54,12 @@ export default function Question({ question, onAnswer }:{question: QuizRequestBo
         <input
           type="text"
           className="border p-2 mt-2 w-full"
-          onChange={(e) => onAnswer(question.questionText, e.target.value)}
+          onChange={(e) => setValue(e.target.value)}
+          onBlur={(e) => onAnswer(question._id, e.target.value)}
         />
       )}
     </div>
   );
 }
+
+export default memo(Question);
